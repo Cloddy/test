@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Добавить событие</title>
+</head>
+<body>
+
+<button onclick="addToCalendar()">Добавить в календарь</button>
+
+<script>
+function addToCalendar() {
+    var event = {
+        title: 'Долбим ежа на вписке',
+        location: 'Парк Сосновка за камнем',
+        notes: 'С собой взять пиво и гренки',
+        startDate: new Date('2024-09-15T09:00:00'),
+        endDate: new Date('2024-09-18T17:00:00')
+    };
+
+    var url = 'data:text/calendar;charset=utf8,' + encodeURIComponent(`
+BEGIN:VCALENDAR
+BEGIN:VEVENT
+SUMMARY:${event.title}
+LOCATION:${event.location}
+DESCRIPTION:${event.notes}
+DTSTART:${event.startDate.toISOString().replace(/-|:|\.\d+/g, '')}
+DTEND:${event.endDate.toISOString().replace(/-|:|\.\d+/g, '')}
+END:VEVENT
+END:VCALENDAR
+`);
+
+    var link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'event.ics');
+    link.click();
+}
+</script>
+
+</body>
+</html>
